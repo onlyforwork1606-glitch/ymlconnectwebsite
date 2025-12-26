@@ -34,3 +34,5 @@ Deploy the present application usinf cloudfare
 2025-12-24T05:03:32.499Z	Success: Build command completed
 2025-12-24T05:03:32.642Z	Executing user deploy command: npx wrangler pages  deploy
 2025-12-24T05:03:34.342Z	
+
+token az9bCBV7A-qOhNWiNBpzsLrRKHgeDkqzsCjWYQ8d
