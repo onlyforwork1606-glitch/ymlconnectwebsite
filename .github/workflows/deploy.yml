@@ -10,17 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # Optional but helpful (can remove later)
+      - name: Show repo folders
+        run: ls
+
       - name: Install dependencies
-        
+        working-directory: funckyfabrics-main
         run: npm install
 
-      - name: Build app
+      - name: Build React app
+        working-directory: funckyfabrics-main
         run: npm run build
 
       - name: Deploy to Cloudflare Pages
@@ -28,6 +35,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: shoopingapplication
-          directory: dist
+          projectName: newwebsite
+          directory: funckyfabrics-main/dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
