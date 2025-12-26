@@ -3,7 +3,6 @@ import Women from "../assets/images/Womenwear.jpg";
 import Winterwear from "../assets/images/Winterwear.jpg";
 import Fashion from "../assets/images/Fashion.jpg";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import usecartstore from "./Statemanagement";
 const Homepage = () => {
   const username = usecartstore((state) => state.username)

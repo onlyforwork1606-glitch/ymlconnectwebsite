@@ -1,31 +1,37 @@
-name: Deploy Cloudflare Worker
+name: Deploy to Cloudflare Pages
 
 on:
   push:
     branches:
-      - main  # Trigger deployment on push to 'main'
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      deployments: write
+    name: Deploy to Cloudflare Pages
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'  # Use the Node.js version that fits your needs
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Install Wrangler CLI
-      run: npm install -g wrangler
+      - name: Build
+        run: npm run build
 
-    - name: Authenticate Wrangler
-      run: wrangler login --api-key ${{ secrets.CLOUDFLARE_API_KEY }}
-
-    - name: Deploy to Cloudflare Worker
-      run: wrangler publish --env production  # Publish the worker
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: funkyfabrics
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
