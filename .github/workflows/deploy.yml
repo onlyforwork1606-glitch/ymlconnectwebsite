@@ -1,44 +1,37 @@
-name: Deploy React App to Cloudflare Pages
+name: Deploy to Cloudflare Pages
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      deployments: write
+    name: Deploy to Cloudflare Pages
     steps:
-      
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      
-      - name: Setup Node.js 
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
-      
-      - name: Show repo structure
-        run: ls -R
-
-    
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-    
-      - name: Build React app
+      - name: Build
         run: npm run build
 
-      
-      - name: Deploy to Cloudflare Pages
+      - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: funkyfabrics         
-          directory: dist                  
-          
+          projectName: funkyfabrics
+          directory: dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
