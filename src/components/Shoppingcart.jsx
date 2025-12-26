@@ -54,7 +54,7 @@ const Shoppingcart = () => {
           {Cartitems.length === 0 ? (
             <div className="itemsbox border-black w-auto max-w-250 h-auto min-h-85">
               <h1 className="text-lg font-semibold p-5">
-                Your shopping bag is empty. 20% off this season great deals grab them this new year
+                Your shopping bag is empty. 20% off this new year 
               </h1>
               <p className="ml-5 text-md">
                 Sign in to save or access saved items in your shopping bag.
