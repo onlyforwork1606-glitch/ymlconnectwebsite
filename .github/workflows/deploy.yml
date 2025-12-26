@@ -1,9 +1,13 @@
-name: Deploy React to Cloudflare Pages
+name: Deploy React App to Cloudflare Pages
 
 on:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
+  deployments: write
 
 jobs:
   deploy:
@@ -16,20 +20,14 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
-        working-directory: client
-        run: npm install
-
-      - name: Build React app
-        working-directory: client
-        run: npm run build
+      - run: npm ci
+      - run: npm run build
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: >
-            pages deploy client/build
-            --project-name=ymlconnectwebsite
-            --branch=main
+          projectName: newwebsite
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
