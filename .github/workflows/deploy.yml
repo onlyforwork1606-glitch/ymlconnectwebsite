@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  deployments: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,19 +20,14 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: npm ci
-        working-directory: frontend   # ← change this
-
-      - name: Build app
-        run: npm run build
-        working-directory: frontend   # ← change this
+      - run: npm ci
+      - run: npm run build
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: shoopingapplication
-          directory: frontend/dist     # ← match build output
+          projectName: newwebsite
+          directory: dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
