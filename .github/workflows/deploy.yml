@@ -10,30 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # 3️⃣ (Optional) Debug repo structure
       - name: Show repo structure
-        run: ls -R   # Optional, can remove later
+        run: ls -R
 
+      # 4️⃣ Install dependencies
       - name: Install dependencies
-        working-directory: FunckyFabrics-main
         run: npm install
 
+      # 5️⃣ Build React app
       - name: Build React app
-        working-directory: FunckyFabrics-main
         run: npm run build
 
+      # 6️⃣ Deploy to Cloudflare Pages
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: newwebsite      # Cloudflare Pages project name
-          directory: FunckyFabrics-main/dist
+          projectName: newwebsite          # Cloudflare Pages project name
+          directory: dist                  # Vite output folder
+          # directory: build              # Uncomment this line if using CRA
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
